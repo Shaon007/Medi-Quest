@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 
-const CategorySlider = () => {
+const OfferSlider = () => {
   const containerRef = useRef(null);
   const [activeDot, setActiveDot] = useState(0);
 
@@ -43,7 +43,7 @@ const CategorySlider = () => {
       {/* Slider */}
       <div
         ref={containerRef}
-        className="CategorySlider flex w-full snap-x snap-mandatory gap-4 overflow-x-scroll scroll-smooth scrollbar-hide"
+        className="OfferSlider flex w-full snap-x snap-mandatory gap-4 overflow-x-scroll scroll-smooth scrollbar-hide"
         onScroll={handleScroll}
       >
         {slides.map((slide, index) => (
@@ -72,4 +72,4 @@ const CategorySlider = () => {
   );
 };
 
-export default CategorySlider;
+export default OfferSlider;
