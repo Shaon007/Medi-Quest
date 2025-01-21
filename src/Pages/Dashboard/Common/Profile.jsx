@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async'
 import useAuth from './../../../Hooks/useAuth';
 const Profile = () => {
   const { user } = useAuth()
-
+  const coverImg = "https://plantnet-39615.web.app/assets/cover-d2NzYa9e.jpg"
   console.log(user)
   return (
     <div className='flex justify-center items-center h-screen'>

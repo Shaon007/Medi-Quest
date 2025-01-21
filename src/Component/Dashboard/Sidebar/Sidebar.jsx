@@ -8,7 +8,8 @@ import AdminMenu from './Menu/AdminMenu'
 import { Link } from 'react-router-dom'
 import SellerMenu from './Menu/SellerMenu'
 import CustomerMenu from './Menu/CustomerMenu'
-import logo from '../../../assets/images/logo-flat.png'
+import useAuth from '../../../Hooks/useAuth'
+// import logo from '../../../assets/images/logo-flat.png'
 const Sidebar = () => {
   const { logOut } = useAuth()
   const [isActive, setActive] = useState(false)
@@ -17,6 +18,7 @@ const Sidebar = () => {
   const handleToggle = () => {
     setActive(!isActive)
   }
+  const logo = "https://plantnet-39615.web.app/assets/logo-flat-Phd-YyJA.png"
   return (
     <>
       {/* Small Screen Navbar */}
@@ -26,7 +28,7 @@ const Sidebar = () => {
             <Link to='/'>
               <img
                 // className='hidden md:block'
-                src='https://i.ibb.co/4ZXzmq5/logo.png'
+                src=''
                 alt='logo'
                 width='100'
                 height='100'

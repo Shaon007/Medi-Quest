@@ -81,7 +81,7 @@ const AdminStatistics = () => {
           </div>
           {/* Calender */}
           <div className=' relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 shadow-md overflow-hidden'>
-            <Calendar color='#4cc718' />
+            {/* <Calendar color='#4cc718' /> */}
           </div>
         </div>
       </div>
