@@ -3,6 +3,7 @@ import { FcGoogle } from 'react-icons/fc'
 import useAuth from '../../hooks/useAuth'
 import { toast } from 'react-hot-toast'
 import { TbFidgetSpinner } from 'react-icons/tb'
+import axios from 'axios'
 
 const SignUp = () => {
   const { createUser, updateUserProfile, signInWithGoogle, loading } = useAuth()
@@ -14,23 +15,35 @@ const SignUp = () => {
     const name = form.name.value
     const email = form.email.value
     const password = form.password.value
+    const image = form.image.files[0]
+    const formData = new FormData()
+    formData.append('image', image)
 
+    // send image to imgbb
     try {
-      //2. User Registration
-      const result = await createUser(email, password)
+      // Send image to imgbb
+      const { data } = await axios.post(
+        `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_API_KEY}`,
+        formData
+      );
 
-      //3. Save username & profile photo
-      await updateUserProfile(
-        name,
-        'https://lh3.googleusercontent.com/a/ACg8ocKUMU3XIX-JSUB80Gj_bYIWfYudpibgdwZE1xqmAGxHASgdvCZZ=s96-c'
-      )
-      console.log(result)
+      if (data.success) {
+        const imageUrl = data.data.url;
 
-      navigate('/')
-      toast.success('Signup Successful')
+        // Register user
+        const result = await createUser(email, password);
+
+        // Update user profile with name and uploaded image URL
+        await updateUserProfile(name, imageUrl);
+
+        navigate('/');
+        toast.success('Signup Successful');
+      } else {
+        throw new Error('Image upload failed');
+      }
     } catch (err) {
-      console.log(err)
-      toast.error(err?.message)
+      console.error(err);
+      toast.error(err.message || 'Something went wrong');
     }
   }
 

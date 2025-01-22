@@ -2,14 +2,14 @@ import { AiOutlineMenu } from 'react-icons/ai'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Container from './Container';
-import useAuth from '../../Hooks/useAuth'
+import useAuth from '../../hooks/useAuth';
 const Navbar = () => {
   const { user, logOut } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const avatarImg = "https://i.pinimg.com/736x/cd/4b/d9/cd4bd9b0ea2807611ba3a67c331bff0b.jpg";
   const logo = "https://plantnet-39615.web.app/assets/logo-flat-Phd-YyJA.png"
   return (
-    <div className='fixed w-full bg-white z-10 shadow-sm'>
+    <div className='fixed w-[90%] bg-white z-10 shadow-sm'>
       <div className='py-3 border-b-[1px]'>
         <Container>
           <div className='flex   justify-between gap-3 md:gap-0'>
