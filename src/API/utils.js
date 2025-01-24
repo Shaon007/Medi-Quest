@@ -11,12 +11,12 @@ export const uploadImage = async (image) => {
     );
 
     if (data.success) {
-      return data.data.url; // Return the image URL
+      return data.data.url;
     } else {
       throw new Error('Image upload failed');
     }
   } catch (error) {
     console.error('Error uploading image:', error.message);
-    throw error; // Re-throw the error for the calling function to handle
+    throw error; 
   }
 };

@@ -1,7 +1,68 @@
 import { Helmet } from 'react-helmet-async'
 import AddMedForm from './../../../Component/Form/AddMedForm';
+import useAuth from './../../../Hooks/useAuth';
+import { uploadImage } from '../../../API/utils';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
 
 const AddMed = () => {
+  const { user } = useAuth()
+  const [loading, setLoading] = useState(false)
+  const [uploadButtonText, setUploadButtonText] = useState('Upload Image')
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+    setLoading(true)
+    const form = e.target
+    const name = form.name.value
+    const description = form.description.value
+    const category = form.category.value
+    const price = parseFloat(form.price.value)
+    const quantity = parseInt(form.quantity.value)
+    const image = form.image.files[0]
+    const imageUrl = await uploadImage(image)
+
+    // seller info
+    const seller = {
+      name: user?.displayName,
+      image: user?.photoURL,
+      email: user?.email,
+    }
+
+    const medData = {
+      name,
+      description,
+      category,
+      price,
+      quantity,
+      image: imageUrl,
+      seller,
+    }
+
+    try {
+      const response = await fetch('http://localhost:5000/medicines', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(medData),
+        credentials: 'include', // include cookies for authentication
+      })
+
+      if (response.ok) {
+        toast.success("Data Added Successfully.")
+      } else {
+        const errorData = await response.json()
+        toast.error(`Failed to add data: ${errorData.message}`)
+      }
+    } catch (err) {
+      console.error("Error adding data:", err)
+      toast.error("An error occurred while adding data.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <div>
       <Helmet>
@@ -9,7 +70,12 @@ const AddMed = () => {
       </Helmet>
 
       {/* Form */}
-      <AddMedForm />
+      <AddMedForm
+        handleSubmit={handleSubmit}
+        uploadButtonText={uploadButtonText}
+        setUploadButtonText={setUploadButtonText}
+        loading={loading}
+      />
     </div>
   )
 }

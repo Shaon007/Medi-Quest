@@ -1,9 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
-import useAuth from '../../hooks/useAuth';
 import { toast } from 'react-hot-toast';
 import { TbFidgetSpinner } from 'react-icons/tb';
 import { uploadImage } from '../../API/utils';
+import { FaYinYang } from 'react-icons/fa';
+import useAuth from '../../Hooks/useAuth';
 
 const SignUp = () => {
   const { createUser, updateUserProfile, signInWithGoogle, loading } = useAuth();
@@ -127,7 +128,7 @@ const SignUp = () => {
               className="bg-lime-500 w-full rounded-md py-3 text-white"
             >
               {loading ? (
-                <TbFidgetSpinner className="animate-spin m-auto" />
+                <FaYinYang className="animate-spin m-auto" />
               ) : (
                 'Continue'
               )}
