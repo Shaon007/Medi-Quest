@@ -7,10 +7,50 @@ import {
   DialogTitle,
 } from '@headlessui/react'
 import { Fragment } from 'react'
+import Button from '../Shared/Button'
+import useAuth from '../../hooks/useAuth'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
 
-const PurchaseModal = ({ closeModal, isOpen }) => {
-  // Total Price Calculation
-
+const PurchaseModal = ({ closeModal, isOpen, medicine }) => {
+  const { user } = useAuth()
+  const { name, quantity, price, category, seller, _id } = medicine
+  const [totalQuantity, setTotalQuantity] = useState(1)
+  const [totalPrice, setTotalPrice] = useState(price)
+  const [purchaseInfo, setPurchaseInfo] = useState({
+    customer: {
+      name: '',
+      email: '',
+      image: '',
+    },
+    seller: seller?.email,
+    medicine: _id,
+    quantity: totalQuantity,
+    price: totalPrice,
+    address: '',
+    status: 'pending',
+  })
+  const handleQuantity = value => {
+    if (value > quantity) {
+      setTotalQuantity(quantity)
+      return toast.error('Quantity Exceeds Available Quantity')
+    }
+    if (value <= 0) {
+      setTotalQuantity(1)
+      return toast.error('Quantity Cannot Be Less Than 1')
+    }
+    setTotalQuantity(value)
+    setTotalPrice(value * price)
+    setPurchaseInfo(prv => {
+      return { ...prv, quantity: value, price: value * price, }
+    })
+  }
+  const handlePurchase = async () => {
+    purchaseInfo.customer.name = user?.displayName;
+    purchaseInfo.customer.email = user?.email;
+    purchaseInfo.customer.image = user?.photoURL;
+    console.log(purchaseInfo);
+  }
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as='div' className='relative z-10' onClose={closeModal}>
@@ -45,20 +85,60 @@ const PurchaseModal = ({ closeModal, isOpen }) => {
                   Review Info Before Purchase
                 </DialogTitle>
                 <div className='mt-2'>
-                  <p className='text-sm text-gray-500'>Plant: Money Plant</p>
+                  <p className='text-sm text-gray-500'>Medicine : {name} </p>
                 </div>
                 <div className='mt-2'>
-                  <p className='text-sm text-gray-500'>Category: Indoor</p>
+                  <p className='text-sm text-gray-500'>Category: {category}</p>
                 </div>
                 <div className='mt-2'>
-                  <p className='text-sm text-gray-500'>Customer: PH</p>
+                  <p className='text-sm text-gray-500'>Customer: {user?.displayName}</p>
                 </div>
 
                 <div className='mt-2'>
-                  <p className='text-sm text-gray-500'>Price: $ 120</p>
+                  <p className='text-sm text-gray-500'>Price: $ {price}</p>
                 </div>
                 <div className='mt-2'>
-                  <p className='text-sm text-gray-500'>Available Quantity: 5</p>
+                  <p className='text-sm text-gray-500'>Available Quantity: {quantity}</p>
+                </div>
+                {/* quantity input */}
+                <div className="space-x-2 mt-2 text-sm">
+                  <label htmlFor="quantity" className=" text-gray-600">
+                    Quantity
+                  </label>
+                  <input
+                    defaultValue={1}
+                    max={quantity}
+                    min={1}
+                    onChange={e => handleQuantity(parseInt(e.target.value))}
+                    className="w-48 px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white"
+                    name="quantity"
+                    id="quantity"
+                    type="number"
+                    placeholder="Purchase quantity"
+                    required
+                  />
+                </div>
+                {/* address input  */}
+                <div className="space-x-3 mt-2 text-sm">
+                  <label htmlFor="address" className=" text-gray-600">
+                    Address
+                  </label>
+                  <input
+                    className=" px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white"
+                    onChange={e => {
+                      setPurchaseInfo(prv => {
+                        return { ...prv, address: e.target.value }
+                      })
+                    }}
+                    name="address"
+                    id="address"
+                    type="text"
+                    placeholder="Write Address here."
+                    required
+                  />
+                </div>
+                <div className='mt-3'>
+                  <Button onClick={handlePurchase} label={` Pay Total ${totalPrice}$`} />
                 </div>
               </DialogPanel>
             </TransitionChild>

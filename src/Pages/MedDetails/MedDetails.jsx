@@ -73,7 +73,7 @@ const MedDetails = () => {
                 gap-2
               '
           >
-            <div>Seller: {seller.name} </div>
+            <div>Seller: {seller?.name} </div>
 
             <img
               className='rounded-full'
@@ -100,12 +100,12 @@ const MedDetails = () => {
           <div className='flex justify-between'>
             <p className='font-bold text-3xl text-gray-500'>Price: {price}$</p>
             <div>
-              <Button label='Purchase' />
+              <Button onClick={() => setIsOpen(true)} label={quantity > 0 ? 'Purchase' : 'Out Of Stock'} />
             </div>
           </div>
           <hr className='my-6' />
 
-          <PurchaseModal closeModal={closeModal} isOpen={isOpen} />
+          <PurchaseModal medicine={medicine} closeModal={closeModal} isOpen={isOpen} />
         </div>
       </div>
     </Container>
