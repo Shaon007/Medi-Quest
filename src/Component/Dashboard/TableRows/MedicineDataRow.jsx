@@ -66,6 +66,7 @@ const MedicineDataRow = () => {
           <span className='relative'>Update</span>
         </span>
         <UpdateMedModal
+          
           isOpen={isEditModalOpen}
           setIsEditModalOpen={setIsEditModalOpen}
         />

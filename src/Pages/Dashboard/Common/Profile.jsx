@@ -1,9 +1,12 @@
 import { Helmet } from 'react-helmet-async'
 import useAuth from './../../../Hooks/useAuth';
+import useRole from '../../../Hooks/useRole';
 const Profile = () => {
   const { user } = useAuth()
+  const [role, isLoading] = useRole()
+  console.log(role);
   const coverImg = "https://plantnet-39615.web.app/assets/cover-d2NzYa9e.jpg"
-  console.log(user)
+  // console.log(user)
   return (
     <div className='flex justify-center items-center h-screen'>
       <Helmet>

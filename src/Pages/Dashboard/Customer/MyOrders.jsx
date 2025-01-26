@@ -82,6 +82,7 @@ const MyOrders = () => {
                   {
                     orders.map(orderData => (
                       <CustomerOrderDataRow
+                        refetch={refetch}
                         key={orderData._id}
                         orderData={orderData} />
                     ))

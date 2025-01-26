@@ -12,8 +12,10 @@ import { useState } from 'react'
 import toast from 'react-hot-toast'
 import useAxiosSecure from '../../Hooks/useAxiosSecure'
 import useAuth from '../../Hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
 
 const PurchaseModal = ({ closeModal, isOpen, medicine, refetch }) => {
+  const navigate = useNavigate()
   const axiosSecure = useAxiosSecure()
   const { user } = useAuth()
   const { name, quantity, price, category, seller, _id } = medicine
@@ -54,11 +56,14 @@ const PurchaseModal = ({ closeModal, isOpen, medicine, refetch }) => {
     // console.log(purchaseInfo);
     try {
       axiosSecure.post('/order', purchaseInfo)
+      // decrease medicine count
       axiosSecure.patch(`/medicines/quantity/${_id}`, {
-        quantityToUpdate : totalQuantity
+        quantityToUpdate: totalQuantity,
+        status: 'decrease',
       } )
       toast.success('Order Successful')
       refetch()
+      navigate('/dashboard/my-orders')
     }
     catch (err) {
       console.log(err);
