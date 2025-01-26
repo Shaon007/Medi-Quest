@@ -13,7 +13,7 @@ const MedDetails = () => {
   let [isOpen, setIsOpen] = useState(false)
   const { id } = useParams()
   const {
-    data: medicine = [],
+    data: medicine = {},
     isLoading,
     refetch,
    } = useQuery({
@@ -105,7 +105,10 @@ const MedDetails = () => {
           </div>
           <hr className='my-6' />
 
-          <PurchaseModal medicine={medicine} closeModal={closeModal} isOpen={isOpen} />
+          <PurchaseModal medicine={medicine}
+            closeModal={closeModal}
+            refetch={refetch}
+            isOpen={isOpen} />
         </div>
       </div>
     </Container>

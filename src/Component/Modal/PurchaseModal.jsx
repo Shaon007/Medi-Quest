@@ -8,11 +8,13 @@ import {
 } from '@headlessui/react'
 import { Fragment } from 'react'
 import Button from '../Shared/Button'
-import useAuth from '../../hooks/useAuth'
 import { useState } from 'react'
 import toast from 'react-hot-toast'
+import useAxiosSecure from '../../Hooks/useAxiosSecure'
+import useAuth from '../../Hooks/useAuth'
 
-const PurchaseModal = ({ closeModal, isOpen, medicine }) => {
+const PurchaseModal = ({ closeModal, isOpen, medicine, refetch }) => {
+  const axiosSecure = useAxiosSecure()
   const { user } = useAuth()
   const { name, quantity, price, category, seller, _id } = medicine
   const [totalQuantity, setTotalQuantity] = useState(1)
@@ -24,7 +26,7 @@ const PurchaseModal = ({ closeModal, isOpen, medicine }) => {
       image: '',
     },
     seller: seller?.email,
-    medicine: _id,
+    medId: _id,
     quantity: totalQuantity,
     price: totalPrice,
     address: '',
@@ -49,7 +51,21 @@ const PurchaseModal = ({ closeModal, isOpen, medicine }) => {
     purchaseInfo.customer.name = user?.displayName;
     purchaseInfo.customer.email = user?.email;
     purchaseInfo.customer.image = user?.photoURL;
-    console.log(purchaseInfo);
+    // console.log(purchaseInfo);
+    try {
+      axiosSecure.post('/order', purchaseInfo)
+      axiosSecure.patch(`/medicines/quantity/${_id}`, {
+        quantityToUpdate : totalQuantity
+      } )
+      toast.success('Order Successful')
+      refetch()
+    }
+    catch (err) {
+      console.log(err);
+    }
+    finally {
+      closeModal()
+    }
   }
   return (
     <Transition appear show={isOpen} as={Fragment}>
