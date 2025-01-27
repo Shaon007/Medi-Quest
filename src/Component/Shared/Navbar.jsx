@@ -2,7 +2,7 @@ import { AiOutlineMenu } from 'react-icons/ai'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Container from './Container';
-import useAuth from '../../hooks/useAuth';
+import useAuth from '../../Hooks/useAuth';
 const Navbar = () => {
   const { user, logOut } = useAuth()
   const [isOpen, setIsOpen] = useState(false)

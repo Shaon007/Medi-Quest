@@ -14,6 +14,8 @@ import ManageUsers from './../Pages/Dashboard/Admin/ManageUsers';
 import Profile from './../Pages/Dashboard/Common/Profile';
 import MyOrders from './../Pages/Dashboard/Customer/MyOrders';
 import ManageOrders from './../Pages/Dashboard/Seller/ManageOrders';
+import SellerRoute from './SellerRoute';
+import AdminRoute from './AdminRoute';
 
 export const Router = createBrowserRouter([
   {
@@ -53,7 +55,9 @@ export const Router = createBrowserRouter([
         path: 'add-med',
         element: (
           <PrivateRoute>
-            <AddMed />
+            <SellerRoute>
+              <AddMed />
+            </SellerRoute>
           </PrivateRoute>
         ),
       },
@@ -61,7 +65,9 @@ export const Router = createBrowserRouter([
         path: 'my-inventory',
         element: (
           <PrivateRoute>
-            <MyInventory />
+            <SellerRoute>
+              <MyInventory />
+            </SellerRoute>
           </PrivateRoute>
         ),
       },
@@ -69,7 +75,9 @@ export const Router = createBrowserRouter([
         path: 'manage-users',
         element: (
           <PrivateRoute>
-            <ManageUsers />
+            <AdminRoute>
+              <ManageUsers />
+            </AdminRoute>
           </PrivateRoute>
         ),
       },
@@ -85,13 +93,19 @@ export const Router = createBrowserRouter([
         path: 'my-orders',
         element: (
           <PrivateRoute>
-            <MyOrders/>
+              <MyOrders />
           </PrivateRoute>
         ),
       },
       {
         path: 'manage-orders',
-        element: <ManageOrders/>,
+        element: (
+          <PrivateRoute>
+            <SellerRoute>
+              <ManageOrders />
+            </SellerRoute>
+          </PrivateRoute>
+        ),
       },
     ],
   },
