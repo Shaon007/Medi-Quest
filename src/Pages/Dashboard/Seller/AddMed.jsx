@@ -4,8 +4,10 @@ import useAuth from './../../../Hooks/useAuth';
 import { uploadImage } from '../../../API/utils';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const AddMed = () => {
+  const navigate = useNavigate()
   const { user } = useAuth()
   const [loading, setLoading] = useState(false)
   const [uploadButtonText, setUploadButtonText] = useState('Upload Image')
@@ -46,7 +48,7 @@ const AddMed = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(medData),
-        credentials: 'include', // include cookies for authentication
+        credentials: 'include',
       })
 
       if (response.ok) {
@@ -55,7 +57,9 @@ const AddMed = () => {
         const errorData = await response.json()
         toast.error(`Failed to add data: ${errorData.message}`)
       }
-    } catch (err) {
+      navigate('/dashboard/my-inventory')
+    }
+     catch (err) {
       console.error("Error adding data:", err)
       toast.error("An error occurred while adding data.")
     } finally {
