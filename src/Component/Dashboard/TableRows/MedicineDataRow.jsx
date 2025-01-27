@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import DeleteModal from '../../Modal/DeleteModal'
 import UpdateMedModal from './../../Modal/UpdateMedModal';
+import useAxiosSecure from '../../../Hooks/useAxiosSecure';
+import toast from 'react-hot-toast';
 
-const MedicineDataRow = ({refetch, med}) => {
+const MedicineDataRow = ({ refetch, med }) => {
+  const axiosSecure = useAxiosSecure()
   let [isOpen, setIsOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
 
@@ -12,7 +15,20 @@ const MedicineDataRow = ({refetch, med}) => {
   function closeModal() {
     setIsOpen(false)
   }
-const { _id, name, category, price, quantity, image } = med || {}
+  const { _id, name, category, price, quantity, image } = med || {}
+  const handleMedDelete = async () => {
+    try {
+      const { data } = await axiosSecure.delete(`/medicines/${_id}`)
+      toast.success("Medicine Deleted Successfully")
+      refetch()
+      console.log(data);
+    }catch(err){
+      console.log(err);
+      toast.error("Failed to delete medicine")
+    } finally {
+      closeModal()
+    }
+  }
   return (
     <tr>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
@@ -52,7 +68,9 @@ const { _id, name, category, price, quantity, image } = med || {}
           ></span>
           <span className='relative'>Delete</span>
         </span>
-        <DeleteModal isOpen={isOpen} closeModal={closeModal} />
+        <DeleteModal
+          handleDelete={handleMedDelete}
+          isOpen={isOpen} closeModal={closeModal} />
       </td>
       <td className='px-5 py-5 border-b border-gray-200 bg-white text-sm'>
         <span
