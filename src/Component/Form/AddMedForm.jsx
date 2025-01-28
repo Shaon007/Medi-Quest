@@ -6,18 +6,28 @@ const AddMedForm = ({ handleSubmit, uploadButtonText, setUploadButtonText, loadi
   const [previewImage, setPreviewImage] = useState(null);
 
   const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setUploadButtonText(file.name);
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPreviewImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setPreviewImage(null);
-    }
-  };
+  const file = e.target.files[0];
+  if (file) {
+    const fileName = file.name;
+    const fileExtension = fileName.split('.').pop();
+    const fileNameWithoutExtension = fileName.slice(0, fileName.lastIndexOf('.'));
+    const truncatedName = fileNameWithoutExtension.length > 15
+      ? fileNameWithoutExtension.slice(0, 15) + '...'
+      : fileNameWithoutExtension;
+
+    const finalName = `${truncatedName}.${fileExtension}`;
+
+    setUploadButtonText(finalName);
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPreviewImage(reader.result);
+    };
+    reader.readAsDataURL(file);
+  } else {
+    setPreviewImage(null);
+  }
+};
 
   return (
     <div className="w-full min-h-[calc(100vh-40px)] flex flex-col justify-center items-center text-gray-800 rounded-xl bg-gray-50">
