@@ -1,8 +1,19 @@
-# React + Vite
+# MediQuest Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Live Link
+[MediQuest Frontend Live](https://medi-quest-c6cb9.web.app/)
 
-Currently, two official plugins are available:
+## Overview
+The MediQuest frontend provides a user-friendly interface for browsing, searching, and managing medical-related data. Built with React.js and Tailwind CSS, it ensures a responsive and visually appealing design. The frontend seamlessly integrates with the backend for data fetching and management.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
+- **React.js**: For building the user interface.
+- **Tailwind CSS**: For responsive and modern styling.
+- **Axios**: For handling API requests.
+- **React Router**: For navigation and routing.
+
+## Key Features
+- **Dynamic User Authentication**: Conditional rendering of features based on user roles.
+- **Admin Panel**: Allows role management and user status updates.
+- **Search and Filter**: Enhanced navigation with search functionality.
+- **Responsive Design**: Optimized for both desktop and mobile devices.
