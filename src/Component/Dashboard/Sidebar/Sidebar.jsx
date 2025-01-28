@@ -19,7 +19,7 @@ const Sidebar = () => {
   const handleToggle = () => {
     setActive(!isActive)
   }
-  const logo = "https://plantnet-39615.web.app/assets/logo-flat-Phd-YyJA.png"
+  const logo = "https://i.ibb.co.com/LNtr7fC/Screenshot-2025-01-29-000715-removebg-preview.png"
   return (
     <>
       {/* Small Screen Navbar */}
@@ -59,7 +59,7 @@ const Sidebar = () => {
                   // className='hidden md:block'
                   src={logo}
                   alt='logo'
-                  width='100'
+                  width='150'
                   height='100'
                 />
               </Link>

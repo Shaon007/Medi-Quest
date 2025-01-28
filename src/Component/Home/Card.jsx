@@ -28,7 +28,7 @@ const Card = ({ medicine }) => {
                 transition
               '
             src={image}
-            alt='Plant Image'
+            alt='med Image'
           />
           <div
             className='

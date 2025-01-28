@@ -7,7 +7,7 @@ const Profile = () => {
   const [role, isLoading] = useRole()
   // console.log(role);
   if (loading, isLoading) return <LoadingSpinner/>
-  const coverImg = "https://plantnet-39615.web.app/assets/cover-d2NzYa9e.jpg"
+  const coverImg = "https://i.pinimg.com/736x/91/70/17/917017949818ccfe4475e5f7f65979b6.jpg"
   // console.log(user)
   return (
     <div className='flex justify-center items-center h-screen'>

@@ -6,7 +6,7 @@ const SellerMenu = () => {
     <>
       <MenuItem
         icon={BsFillHouseAddFill}
-        label='Add Plant'
+        label='Add Medicine'
         address='add-med'
       />
       <MenuItem icon={MdHomeWork} label='My Inventory' address='my-inventory' />

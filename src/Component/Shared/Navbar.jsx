@@ -7,15 +7,15 @@ const Navbar = () => {
   const { user, logOut } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const avatarImg = "https://i.pinimg.com/736x/cd/4b/d9/cd4bd9b0ea2807611ba3a67c331bff0b.jpg";
-  const logo = "https://plantnet-39615.web.app/assets/logo-flat-Phd-YyJA.png"
+  const logo = "https://i.ibb.co.com/LNtr7fC/Screenshot-2025-01-29-000715-removebg-preview.png"
   return (
     <div className='fixed w-[90%] bg-white z-10 shadow-sm'>
       <div className='py-3 border-b-[1px]'>
         <Container>
-          <div className='flex   justify-between gap-3 md:gap-0'>
+          <div className='flex  justify-between gap-3 md:gap-0'>
             {/* Logo */}
             <Link to='/'>
-              <img src={logo} alt='logo' width='100' height='100' />
+              <img src={logo} alt='logo' width='150' height='100' />
             </Link>
             {/* Dropdown Menu */}
             <div className='relative'>

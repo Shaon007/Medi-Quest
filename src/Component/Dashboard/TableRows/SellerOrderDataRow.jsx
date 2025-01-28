@@ -85,7 +85,7 @@ const SellerOrderDataRow = ({ orderData, refetch }) => {
             <option value='Delivered'>Deliver</option>
           </select>
          <button
-           disabled = {status = 'Delivered'}
+           disabled = {status === 'Delivered'}
             onClick={() => setIsOpen(true)}
             className='relative disabled:cursor-not-allowed cursor-pointer inline-block px-3 py-1 font-semibold text-green-900 leading-tight'
           >

@@ -44,7 +44,7 @@ const AddMedForm = ({ handleSubmit, uploadButtonText, setUploadButtonText, loadi
                 name="name"
                 id="name"
                 type="text"
-                placeholder="Plant Name"
+                placeholder="Medicine Name"
                 required
               />
             </div>
@@ -58,10 +58,12 @@ const AddMedForm = ({ handleSubmit, uploadButtonText, setUploadButtonText, loadi
                 className="w-full px-4 py-3 border-lime-300 focus:outline-lime-500 rounded-md bg-white"
                 name="category"
               >
-                <option value="Indoor">Indoor</option>
-                <option value="Outdoor">Outdoor</option>
-                <option value="Succulent">Succulent</option>
-                <option value="Flowering">Flowering</option>
+                <option value="General">General</option>
+                <option value="Infectious">Infectious</option>
+                <option value="Prescribed">Prescribed</option>
+                <option value="Veterinary">Veterinary</option>
+                <option value="Ointment">Ointment</option>
+                <option value="Suppliment">Suppliment</option>
               </select>
             </div>
             {/* Description */}
@@ -71,7 +73,7 @@ const AddMedForm = ({ handleSubmit, uploadButtonText, setUploadButtonText, loadi
               </label>
               <textarea
                 id="description"
-                placeholder="Write plant description here..."
+                placeholder="Write medicine description here..."
                 className="block rounded-md focus:lime-300 w-full h-32 px-4 py-3 text-gray-800 border border-lime-300 bg-white focus:outline-lime-500"
                 name="description"
               ></textarea>

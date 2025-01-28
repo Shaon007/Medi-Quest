@@ -54,7 +54,7 @@ const MedDetails = () => {
           </div>
         </div>
         <div className='md:gap-10 flex-1'>
-          {/* Plant Info */}
+          {/* Medicine Info */}
           <Heading
             title={name}
             subtitle={`Category: ${category}`}
