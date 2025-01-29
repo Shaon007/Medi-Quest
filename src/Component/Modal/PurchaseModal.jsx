@@ -27,9 +27,9 @@ const PurchaseModal = ({ closeModal, isOpen, medicine, refetch }) => {
   const [totalPrice, setTotalPrice] = useState(price)
   const [purchaseInfo, setPurchaseInfo] = useState({
     customer: {
-      name: '',
-      email: '',
-      image: '',
+      name: user.displayName || '',
+      email: user.email || '',
+      image: user.photoURL || '',
     },
     seller: seller?.email,
     medId: _id,
@@ -53,29 +53,36 @@ const PurchaseModal = ({ closeModal, isOpen, medicine, refetch }) => {
       return { ...prv, quantity: value, price: value * price, }
     })
   }
-  const handlePurchase = async () => {
-    purchaseInfo.customer.name = user?.displayName;
-    purchaseInfo.customer.email = user?.email;
-    purchaseInfo.customer.image = user?.photoURL;
-    // console.log(purchaseInfo);
-    try {
-      axiosSecure.post('/order', purchaseInfo)
-      // decrease medicine count
-      axiosSecure.patch(`/medicines/quantity/${_id}`, {
-        quantityToUpdate: totalQuantity,
-        status: 'decrease',
-      } )
-      toast.success('Order Successful')
-      refetch()
-      navigate('/dashboard/my-orders')
+const handlePurchase = async () => {
+  // Ensure customer data is set correctly
+  const updatedPurchaseInfo = {
+    ...purchaseInfo,
+    customer: {
+      name: user?.displayName || '',
+      email: user?.email || '',
+      image: user?.photoURL || '',
     }
-    catch (err) {
-      console.log(err);
-    }
-    finally {
-      closeModal()
-    }
+  };
+
+  try {
+    await axiosSecure.post('/order', updatedPurchaseInfo);
+
+    // Decrease medicine count
+    await axiosSecure.patch(`/medicines/quantity/${_id}`, {
+      quantityToUpdate: totalQuantity,
+      status: 'decrease',
+    });
+
+    toast.success('Order Successful');
+    refetch();
+    navigate('/dashboard/my-orders');
+  } catch (err) {
+    console.log(err);
+  } finally {
+    closeModal();
   }
+};
+
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as='div' className='relative z-10' onClose={closeModal}>

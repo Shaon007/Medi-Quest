@@ -16,6 +16,7 @@ import MyOrders from './../Pages/Dashboard/Customer/MyOrders';
 import ManageOrders from './../Pages/Dashboard/Seller/ManageOrders';
 import SellerRoute from './SellerRoute';
 import AdminRoute from './AdminRoute';
+import UpdateProfile from '../Pages/UpdateProfile/UpdateProfile';
 
 export const Router = createBrowserRouter([
   {
@@ -107,6 +108,14 @@ export const Router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      {
+        path: 'update-profile',
+        element: (
+          <PrivateRoute>
+            <UpdateProfile />
+          </PrivateRoute>
+        ),
+      }
     ],
   },
 ])

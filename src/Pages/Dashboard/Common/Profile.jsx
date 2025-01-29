@@ -2,10 +2,15 @@ import { Helmet } from 'react-helmet-async'
 import useAuth from './../../../Hooks/useAuth';
 import useRole from '../../../Hooks/useRole';
 import LoadingSpinner from './../../../Component/Shared/LoadinSpinner';
+import { useNavigate, Link } from 'react-router-dom';
+import { useState } from 'react';
+import UpdatePasswordModal from '../../../Component/Modal/UpdatePasswordModal';
 const Profile = () => {
-  const { user,loading } = useAuth()
+  // const navigate = useNavigate()
+  const { user, loading } = useAuth()
   const [role, isLoading] = useRole()
   // console.log(role);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   if (loading, isLoading) return <LoadingSpinner/>
   const coverImg = "https://i.pinimg.com/736x/91/70/17/917017949818ccfe4475e5f7f65979b6.jpg"
   // console.log(user)
@@ -49,12 +54,22 @@ const Profile = () => {
               </p>
 
               <div>
-                <button className='bg-lime-500 px-10 py-1 rounded-lg text-black cursor-pointer hover:bg-lime-800 block mb-1'>
-                  Update Profile
-                </button>
-                <button className='bg-lime-500 px-7 py-1 rounded-lg text-black cursor-pointer hover:bg-lime-800'>
+                <Link  to='/dashboard/update-profile'>
+                  <button className='bg-lime-500 px-10 py-1 rounded-lg text-black cursor-pointer hover:bg-lime-800 block mb-1'>
+                    Update Profile
+                  </button>
+                </Link>
+                <button
+                  onClick={() => setIsModalOpen(true)}
+                  className='bg-lime-500 px-7 py-1 rounded-lg text-black cursor-pointer hover:bg-lime-800'
+                >
                   Change Password
                 </button>
+
+                <UpdatePasswordModal
+                  isOpen={isModalOpen}
+                  onClose={() => setIsModalOpen(false)}
+                />
               </div>
             </div>
           </div>

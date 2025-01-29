@@ -42,7 +42,7 @@ const AddMed = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/medicines', {
+      const response = await fetch('https://medi-quest-server-three.vercel.app/medicines', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ const AddMed = () => {
       }
       navigate('/dashboard/my-inventory')
     }
-     catch (err) {
+    catch (err) {
       console.error("Error adding data:", err)
       toast.error("An error occurred while adding data.")
     } finally {
