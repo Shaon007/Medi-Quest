@@ -42,7 +42,7 @@ const AddMed = () => {
     }
 
     try {
-      const response = await fetch('https://medi-quest-server-three.vercel.app/medicines', {
+      const response = await fetch('https://medi-quest-server2.vercel.app/medicines', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

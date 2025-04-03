@@ -1,18 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 
-const OfferSlider = () => {
+// OfferSlider Component
+const OfferSlider = ({ slides }) => {
   const containerRef = useRef(null);
   const [activeDot, setActiveDot] = useState(0);
-
-  const slides = [
-    { id: 1, image: "https://i.pinimg.com/736x/fc/42/b1/fc42b1eeb4c4e89c5b6bd4309ff19253.jpg", text: "General" },
-    { id: 2, image: "https://i.pinimg.com/736x/c6/65/3e/c6653ed6a898e7930fd32314bccbebd9.jpg", text: "Prescribed" },
-    { id: 3, image: "https://i.pinimg.com/736x/65/0e/9b/650e9b057cc715ffe1128759fcd2c281.jpg", text: "Infectious" },
-    { id: 4, image: "https://i.pinimg.com/736x/18/34/73/183473729e7a9756f1444c7ecb58c7b0.jpg", text: "Veterinary" },
-    { id: 5, image: "https://i.pinimg.com/736x/39/a9/24/39a924f9673764fbbc5f7cd1c2a8ad67.jpg", text: "5" },
-    { id: 6, image: "https://i.pinimg.com/736x/67/73/34/67733401c8f5d95d1cc46dbffdc9ef43.jpg", text: "6" },
-    { id: 7, image: "https://i.pinimg.com/736x/8a/76/d3/8a76d348f5e96a24a0cc6fb1fcf3b5d1.jpg", text: "7" },
-  ];
 
   const updateActiveDot = () => {
     const container = containerRef.current;
@@ -72,4 +64,53 @@ const OfferSlider = () => {
   );
 };
 
-export default OfferSlider;
+// CategoryCard Component
+const CategoryCard = () => {
+  const [categories, setCategories] = useState([]);
+  const [medicines, setMedicines] = useState({});
+
+  useEffect(() => {
+    axios.get("/medicines").then((response) => {
+      const allMedicines = response.data;
+      const categoryMap = {};
+      allMedicines.forEach((med) => {
+        if (!categoryMap[med.category]) {
+          categoryMap[med.category] = [];
+        }
+        categoryMap[med.category].push(med);
+      });
+      setCategories(Object.keys(categoryMap));
+      setMedicines(categoryMap);
+    });
+  }, []);
+
+  return (
+    <div className="w-full dark:bg-gray-800">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8 pt-8">
+        <div className="mx-auto max-w-2xl text-center">
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+            Medicine Categories
+          </h2>
+          <p className="mt-2 text-lg leading-8 text-gray-600 dark:text-gray-300">
+            Browse essential medicines by category.
+          </p>
+        </div>
+        {categories.map((category) => (
+          <div key={category} className="mt-8">
+            <h3 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
+              {category}
+            </h3>
+            <OfferSlider
+              slides={medicines[category].map((med) => ({
+                image: med.image,
+                text: med.name,
+              }))}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default CategoryCard;
