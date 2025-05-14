@@ -41,7 +41,7 @@ const Meds = () => {
         <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">Medicine Categories</h2>
         <p class="mt-2 text-lg leading-8 text-gray-600 dark:text-gray-300">Browse essential medicines by category.</p>
       </div>
-      <Container>
+      <div >
         {/* Category Image Carousel as Filter */}
         <CategoryCard setSelectedCategory={setSelectedCategory} />
 
@@ -55,7 +55,7 @@ const Meds = () => {
         ) : (
           <p className="text-center text-gray-500">No Data To Show</p>
         )}
-      </Container>
+      </div>
     </div>
 
   );

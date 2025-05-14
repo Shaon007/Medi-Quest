@@ -53,31 +53,44 @@ const CategoryCard = ({ setSelectedCategory }) => {
   };
 
   return (
-    <Carousel responsive={responsive} autoPlay autoPlaySpeed={2000} infinite>
-      {categories.length > 0 ? (
-        categories.map((category) => (
-          <div
-            key={category.name}
-            className="relative p-2 cursor-pointer text-center"
-            onClick={() => setSelectedCategory(category.name)}
-          >
-            <div className="relative w-full h-60">
-              <img
-                src={category.image}
-                alt={category.name}
-                className="w-full h-full object-cover rounded-lg"
-              />
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg">
-                <p className="text-white text-lg font-semibold">{category.name}</p>
+    <div className="bg-gray-800 w-full px-8">
+      {/* Category Carousel */}
+      <Carousel responsive={responsive} autoPlay autoPlaySpeed={2000} infinite>
+        {categories.length > 0 ? (
+          categories.map((category) => (
+            <div
+              key={category.name}
+              className="relative p-2 cursor-pointer text-center"
+              onClick={() => setSelectedCategory(category.name)}
+            >
+              <div className="relative w-full h-60">
+                <img
+                  src={category.image}
+                  alt={category.name}
+                  className="w-full h-full object-cover rounded-lg"
+                />
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300 rounded-lg">
+                  <p className="text-white text-lg font-semibold">{category.name}</p>
+                </div>
               </div>
             </div>
-          </div>
-        ))
-      ) : (
-        <p className="text-center text-gray-500">No Categories Found</p>
-      )}
-    </Carousel>
+          ))
+        ) : (
+          <p className="text-center text-gray-500">No Categories Found</p>
+        )}
+      </Carousel>
+
+      {/* Show All Medicines Button */}
+      <div className="text-center my-6 pb-4">
+        <button
+          onClick={() => setSelectedCategory("All")}
+          className="px-6 py-2 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-900 transition"
+        >
+          Show All Medicines
+        </button>
+      </div>
+    </div>
   );
 };
 

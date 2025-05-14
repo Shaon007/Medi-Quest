@@ -17,3 +17,8 @@ The MediQuest frontend provides a user-friendly interface for browsing, searchin
 - **Admin Panel**: Allows role management and user status updates.
 - **Search and Filter**: Enhanced navigation with search functionality.
 - **Responsive Design**: Optimized for both desktop and mobile devices.
+## User Credentials
+- **Admin email**: nazirhossain.shaon@gmail.com
+- **Admin password**: Aa1234
+- **Seller email**: seller2@gmail.com
+- **Seller password**: Aa1234
