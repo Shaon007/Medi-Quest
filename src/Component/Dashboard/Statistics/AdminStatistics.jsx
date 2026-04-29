@@ -4,8 +4,8 @@ import { BsFillCartPlusFill, BsFillHouseDoorFill } from 'react-icons/bs'
 import { useQuery } from '@tanstack/react-query'
 import useAxiosSecure from '../../../Hooks/useAxiosSecure'
 import LoadingSpinner from '../../Shared/LoadinSpinner'
-import 'react-date-range/dist/styles.css'; // Main style file
-import 'react-date-range/dist/theme/default.css'; // Theme CSS file
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css'; 
 import Chart from '../Charts/Chart'
 const AdminStatistics = () => {
   const axiosSecure = useAxiosSecure()
