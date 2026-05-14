@@ -1,53 +1,87 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
+import { FaGithub } from 'react-icons/fa';
 import { toast } from 'react-hot-toast';
 import { TbFidgetSpinner } from 'react-icons/tb';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { uploadImage } from '../../API/utils';
-import { FaYinYang } from 'react-icons/fa';
 import useAuth from '../../Hooks/useAuth';
+import axios from 'axios';
+import { updateProfile } from 'firebase/auth';
 
 const SignUp = () => {
-  const { createUser, updateUserProfile, signInWithGoogle, loading } = useAuth();
+  const { createUser, signInWithGoogle, signInWithGithub, loading } = useAuth();
   const navigate = useNavigate();
+  const [submitting, setSubmitting] = useState(false);
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  // Form submit handler
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const form = event.target;
-    const name = form.name.value;
-    const email = form.email.value;
-    const password = form.password.value;
-    const image = form.image.files[0];
-
+  const onSubmit = async (data) => {
+    setSubmitting(true);
     try {
-      // Upload the image and get the URL
-      const imageUrl = await uploadImage(image);
+      const imageUrl = await uploadImage(data.image[0]);
+      const result = await createUser(data.email, data.password);
+      await updateProfile(result.user, {
+        displayName: data.name,
+        photoURL: imageUrl,
+      });
 
-      // Register user
-      const result = await createUser(email, password);
+      // Save user with selected role
+      await axios.post(`${import.meta.env.VITE_API_URL}/users/${data.email}`, {
+        name: data.name,
+        email: data.email,
+        image: imageUrl,
+        role: data.role === 'seller' ? 'seller' : 'customer',
+      });
 
-      // Update user profile with name and uploaded image URL
-      await updateUserProfile(name, imageUrl);
+      // If seller role selected, automatically send seller request to admin
+      if (data.role === 'seller') {
+        try {
+          await axios.patch(
+            `${import.meta.env.VITE_API_URL}/users/${data.email}`,
+            {},
+            { withCredentials: true }
+          );
+        } catch (e) {
+          console.error('Seller request failed:', e);
+        }
+      }
 
       navigate('/');
-      toast.success('Signup Successful');
+      toast.success('Welcome to MediQuest! 🎉');
     } catch (err) {
       console.error(err);
       toast.error(err.message || 'Something went wrong');
+    } finally {
+      setSubmitting(false);
     }
   };
 
-  // Handle Google Signin
   const handleGoogleSignIn = async () => {
+    setSubmitting(true);
     try {
-      // User Registration using Google
       await signInWithGoogle();
-
       navigate('/');
-      toast.success('Signup Successful');
+      toast.success('Welcome to MediQuest! 🎉');
     } catch (err) {
       console.log(err);
       toast.error(err?.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleGithubSignIn = async () => {
+    setSubmitting(true);
+    try {
+      await signInWithGithub();
+      navigate('/');
+      toast.success('Welcome to MediQuest! 🎉');
+    } catch (err) {
+      console.log(err);
+      toast.error(err?.message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -59,36 +93,35 @@ const SignUp = () => {
           <p className="text-sm text-gray-400">Welcome to MediQuest</p>
         </div>
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           noValidate=""
-          action=""
-          className="space-y-6 ng-untouched ng-pristine ng-valid"
+          className="space-y-6"
         >
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block mb-2 text-sm">
+              <label htmlFor="name" className="block mb-2 text-sm">
                 Name
               </label>
               <input
                 type="text"
-                name="name"
+                {...register('name', { required: 'Name is required' })}
                 id="name"
                 placeholder="Enter Your Name Here"
                 className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900"
-                data-temp-mail-org="0"
               />
+              {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
             </div>
             <div>
               <label htmlFor="image" className="block mb-2 text-sm">
                 Select Image:
               </label>
               <input
-                required
                 type="file"
                 id="image"
-                name="image"
+                {...register('image', { required: 'Image is required' })}
                 accept="image/*"
               />
+              {errors.image && <p className="text-red-500 text-xs mt-1">{errors.image.message}</p>}
             </div>
             <div>
               <label htmlFor="email" className="block mb-2 text-sm">
@@ -96,13 +129,12 @@ const SignUp = () => {
               </label>
               <input
                 type="email"
-                name="email"
+                {...register('email', { required: 'Email is required' })}
                 id="email"
-                required
                 placeholder="Enter Your Email Here"
                 className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900"
-                data-temp-mail-org="0"
               />
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
             </div>
             <div>
               <div className="flex justify-between">
@@ -112,23 +144,40 @@ const SignUp = () => {
               </div>
               <input
                 type="password"
-                name="password"
+                {...register('password', {
+                  required: 'Password is required',
+                  minLength: { value: 6, message: 'Password must be at least 6 characters' }
+                })}
                 autoComplete="new-password"
                 id="password"
-                required
                 placeholder="*******"
                 className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900"
               />
+              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+            </div>
+            <div>
+              <label htmlFor="role" className="block mb-2 text-sm">
+                Select Role
+              </label>
+              <select
+                {...register('role')}
+                id="role"
+                className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900"
+              >
+                <option value="user">User</option>
+                <option value="seller">Seller</option>
+              </select>
             </div>
           </div>
 
           <div>
             <button
+              disabled={submitting}
               type="submit"
-              className="bg-lime-500 w-full rounded-md py-3 text-white"
+              className="bg-lime-500 w-full rounded-md py-3 text-white disabled:opacity-50"
             >
-              {loading ? (
-                <FaYinYang className="animate-spin m-auto" />
+              {submitting ? (
+                <TbFidgetSpinner className="animate-spin m-auto" />
               ) : (
                 'Continue'
               )}
@@ -149,6 +198,14 @@ const SignUp = () => {
           <FcGoogle size={32} />
 
           <p>Continue with Google</p>
+        </div>
+        <div
+          onClick={handleGithubSignIn}
+          className="flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer"
+        >
+          <FaGithub size={32} />
+
+          <p>Continue with GitHub</p>
         </div>
         <p className="px-6 text-sm text-center text-gray-400">
           Already have an account?{' '}

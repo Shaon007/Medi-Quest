@@ -78,6 +78,34 @@ const AddMedForm = ({ handleSubmit, uploadButtonText, setUploadButtonText, loadi
                 name="description"
               ></textarea>
             </div>
+            {/* Generic Name */}
+            <div className="space-y-1 text-sm">
+              <label htmlFor="genericName" className="block text-gray-600">
+                Generic Name
+              </label>
+              <input
+                className="w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white"
+                name="genericName"
+                id="genericName"
+                type="text"
+                placeholder="Generic Name"
+                required
+              />
+            </div>
+            {/* Company */}
+            <div className="space-y-1 text-sm">
+              <label htmlFor="company" className="block text-gray-600">
+                Company
+              </label>
+              <input
+                className="w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white"
+                name="company"
+                id="company"
+                type="text"
+                placeholder="Manufacturing Company"
+                required
+              />
+            </div>
           </div>
           <div className="space-y-6 flex flex-col">
             {/* Price & Quantity */}
@@ -108,6 +136,37 @@ const AddMedForm = ({ handleSubmit, uploadButtonText, setUploadButtonText, loadi
                   type="number"
                   placeholder="Available quantity"
                   required
+                />
+              </div>
+            </div>
+            {/* Mass Unit & Discount */}
+            <div className="flex justify-between gap-2">
+              <div className="space-y-1 text-sm">
+                <label htmlFor="massUnit" className="block text-gray-600">
+                  Mass Unit
+                </label>
+                <select
+                  className="w-full px-4 py-3 border-lime-300 focus:outline-lime-500 rounded-md bg-white"
+                  name="massUnit"
+                  id="massUnit"
+                >
+                  <option value="Mg">Mg</option>
+                  <option value="ML">ML</option>
+                </select>
+              </div>
+              <div className="space-y-1 text-sm">
+                <label htmlFor="discount" className="block text-gray-600">
+                  Discount %
+                </label>
+                <input
+                  className="w-full px-4 py-3 text-gray-800 border border-lime-300 focus:outline-lime-500 rounded-md bg-white"
+                  name="discount"
+                  id="discount"
+                  type="number"
+                  placeholder="0"
+                  defaultValue={0}
+                  min={0}
+                  max={100}
                 />
               </div>
             </div>

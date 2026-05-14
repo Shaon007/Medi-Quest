@@ -1,46 +1,74 @@
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
+import { FaGithub } from 'react-icons/fa'
 import toast from 'react-hot-toast'
 import { TbFidgetSpinner } from 'react-icons/tb'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import LoadingSpinner from '../../Component/Shared/LoadinSpinner'
 import useAuth from '../../Hooks/useAuth'
 
+const getAuthErrorMessage = (error) => {
+  if (error?.code === 'auth/account-exists-with-different-credential') {
+    return 'An account already exists with this email using a different sign-in method. Please use your original sign-in method.'
+  }
+  return error?.message || 'Something went wrong'
+}
+
 const Login = () => {
-  const { signIn, signInWithGoogle, loading, user } = useAuth()
+  const { signIn, signInWithGoogle, signInWithGithub, loading, user } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const from = location?.state?.from?.pathname || '/'
+  const [submitting, setSubmitting] = useState(false)
+  const { register, handleSubmit, formState: { errors } } = useForm()
+
   if (user) return <Navigate to={from} replace={true} />
-  if (loading) return <LoadingSpinner/>
+  if (loading) return <LoadingSpinner />
+
   // form submit handler
-  const handleSubmit = async event => {
-    event.preventDefault()
-    const form = event.target
-    const email = form.email.value
-    const password = form.password.value
-
+  const onSubmit = async (data) => {
+    setSubmitting(true)
     try {
-      //User Login
-      await signIn(email, password)
-
-      navigate(from, { replace: true })
-      toast.success('Login Successful')
+      await signIn(data.email, data.password)
+      navigate('/', { replace: true })
+      toast.success('Welcome back! 🎉')
     } catch (err) {
       console.log(err)
       toast.error(err?.message)
+    } finally {
+      setSubmitting(false)
     }
   }
 
   // Handle Google Signin
   const handleGoogleSignIn = async () => {
+    setSubmitting(true)
     try {
       //User Registration using google
       await signInWithGoogle()
-      navigate(from, { replace: true })
-      toast.success('Login Successful')
+      navigate('/', { replace: true })
+      toast.success('Welcome back! 🎉')
     } catch (err) {
       console.log(err)
-      toast.error(err?.message)
+      toast.error(getAuthErrorMessage(err))
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  // Handle GitHub Signin
+  const handleGithubSignIn = async () => {
+    setSubmitting(true)
+    try {
+      await signInWithGithub()
+      navigate('/', { replace: true })
+      toast.success('Welcome back! 🎉')
+    } catch (err) {
+      console.log(err)
+      toast.error(getAuthErrorMessage(err))
+    } finally {
+      setSubmitting(false)
     }
   }
   return (
@@ -53,10 +81,9 @@ const Login = () => {
           </p>
         </div>
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(onSubmit)}
           noValidate=''
-          action=''
-          className='space-y-6 ng-untouched ng-pristine ng-valid'
+          className='space-y-6'
         >
           <div className='space-y-4'>
             <div>
@@ -65,13 +92,12 @@ const Login = () => {
               </label>
               <input
                 type='email'
-                name='email'
+                {...register('email', { required: 'Email is required' })}
                 id='email'
-                required
                 placeholder='Enter Your Email Here'
                 className='w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900'
-                data-temp-mail-org='0'
               />
+              {errors.email && <p className='text-red-500 text-xs mt-1'>{errors.email.message}</p>}
             </div>
             <div>
               <div className='flex justify-between'>
@@ -81,22 +107,23 @@ const Login = () => {
               </div>
               <input
                 type='password'
-                name='password'
+                {...register('password', { required: 'Password is required' })}
                 autoComplete='current-password'
                 id='password'
-                required
                 placeholder='*******'
                 className='w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-lime-500 bg-gray-200 text-gray-900'
               />
+              {errors.password && <p className='text-red-500 text-xs mt-1'>{errors.password.message}</p>}
             </div>
           </div>
 
           <div>
             <button
+              disabled={submitting}
               type='submit'
-              className='bg-lime-500 w-full rounded-md py-3 text-white'
+              className='bg-lime-500 w-full rounded-md py-3 text-white disabled:opacity-50'
             >
-              {loading ? (
+              {submitting ? (
                 <TbFidgetSpinner className='animate-spin m-auto' />
               ) : (
                 'Continue'
@@ -123,6 +150,14 @@ const Login = () => {
           <FcGoogle size={32} />
 
           <p>Continue with Google</p>
+        </div>
+        <div
+          onClick={handleGithubSignIn}
+          className='flex justify-center items-center space-x-2 border m-3 p-2 border-gray-300 border-rounded cursor-pointer'
+        >
+          <FaGithub size={32} />
+
+          <p>Continue with GitHub</p>
         </div>
         <p className='px-6 text-sm text-center text-gray-400'>
           Don&apos;t have an account yet?{' '}

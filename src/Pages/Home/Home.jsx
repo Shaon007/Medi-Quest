@@ -2,8 +2,9 @@
 import { Helmet } from 'react-helmet';
 import Banner from '../../Component/Home/Banner';
 import CategoryCard from '../../Component/Home/CategoryCard';
-import Meds from '../../Component/Home/Meds';
 import OfferSlider from '../../Component/Home/OfferSlider';
+import WhyChooseUs from '../../Component/Home/Meds';
+import Testimonials from '../../Component/Home/Testimonials';
 
 const Home = () => {
 
@@ -13,9 +14,10 @@ const Home = () => {
         <title>MediQuest | Buy Essential Medicines</title>
       </Helmet>
       <Banner />
-      {/* <CategoryCard /> */}
-      {/* <OfferSlider /> */}
-      <Meds/>
+      <CategoryCard />
+      <OfferSlider />
+      <WhyChooseUs />
+      <Testimonials />
     </div>
   );
 };

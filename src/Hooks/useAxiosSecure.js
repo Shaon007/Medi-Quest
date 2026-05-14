@@ -12,16 +12,27 @@ const useAxiosSecure = () => {
   const navigate = useNavigate()
   const { logOut } = useAuth()
   useEffect(() => {
+    // Request interceptor - attach token from localStorage
+    axiosSecure.interceptors.request.use(
+      config => {
+        const token = localStorage.getItem('access-token')
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`
+        }
+        return config
+      },
+      error => Promise.reject(error)
+    )
+
+    // Response interceptor - handle auth errors
     axiosSecure.interceptors.response.use(
       res => {
         return res
       },
       async error => {
         console.log('Error caught from axios interceptor-->', error.response)
-        if (error.response.status === 401 || error.response.status === 403) {
-          // logout
+        if (error.response?.status === 401 || error.response?.status === 403) {
           logOut()
-          // navigate to login
           navigate('/login')
         }
         return Promise.reject(error)

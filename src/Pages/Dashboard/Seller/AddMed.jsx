@@ -21,6 +21,10 @@ const AddMed = () => {
     const category = form.category.value
     const price = parseFloat(form.price.value)
     const quantity = parseInt(form.quantity.value)
+    const genericName = form.genericName.value
+    const company = form.company.value
+    const massUnit = form.massUnit.value
+    const discount = parseFloat(form.discount.value) || 0
     const image = form.image.files[0]
     const imageUrl = await uploadImage(image)
 
@@ -37,12 +41,16 @@ const AddMed = () => {
       category,
       price,
       quantity,
+      genericName,
+      company,
+      massUnit,
+      discount,
       image: imageUrl,
       seller,
     }
 
     try {
-      const response = await fetch('https://medi-quest-server2.vercel.app/medicines', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/medicines`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

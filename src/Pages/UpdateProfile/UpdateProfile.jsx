@@ -42,7 +42,7 @@ const UpdateProfile = () => {
       await updateUserProfile(formData.displayName, formData.photoURL);
 
       // Send updated data to the backend
-      const response = await fetch('https://medi-quest-server2.vercel.app/update-profile', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/update-profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

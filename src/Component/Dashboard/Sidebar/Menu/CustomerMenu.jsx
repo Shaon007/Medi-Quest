@@ -32,6 +32,7 @@ const CustomerMenu = () => {
   return (
     <>
       <MenuItem icon={BsFingerprint} label='My Orders' address='my-orders' />
+      <MenuItem icon={BsFingerprint} label='Payment History' address='payment-history' />
 
       <button
         onClick={() => setIsOpen(true)}
